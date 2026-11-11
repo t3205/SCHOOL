@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>間接服務系統 (活潑海洋珊瑚版)</title>
+    <title>間接服務系統 (優雅粉奶茶版)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -12,34 +12,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --ocean-blue: #4B7B94;
-            --coral-pink: #E07A5F;
-            --blush-pink: #D88C9A;
-            --sand-beige: #FAF7F2;
-            --warm-tan: #D4C5B9;
-            --mint-green: #81B29A;
-            --text-main: #2D3748;
+            --brand-bg: #F7F2EC;
+            --brand-primary: #DDC3B5;
+            --brand-primary-dark: #BFA191;
+            --brand-accent: #EBC7C4;
+            --brand-accent-dark: #D4A3A0;
+            --brand-light: #F3E1E1;
+            --text-main: #5C4643;
+            --text-muted: #8C7572;
         }
-
         body { 
-            background-color: var(--sand-beige); 
+            background-color: var(--brand-bg); 
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
             color: var(--text-main);
         }
-
         .chip { transition: all 0.15s ease-in-out; }
         .chip-active { 
-            background-color: var(--ocean-blue) !important; 
+            background-color: #BFA191 !important; 
             color: #ffffff !important; 
-            border-color: #4B7B94 !important;
+            border-color: #BFA191 !important;
             font-weight: 700 !important;
-            box-shadow: 0 3px 8px rgba(75, 123, 148, 0.3);
+            box-shadow: 0 3px 8px rgba(191, 161, 145, 0.4);
         }
-
         #login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #4B7B94 0%, #D88C9A 100%);
+            background: linear-gradient(135deg, #DDC3B5 0%, #EBC7C4 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -49,51 +47,46 @@
             background: #ffffff;
             padding: 32px 24px;
             border-radius: 20px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 25px -5px rgba(92, 70, 67, 0.15);
             text-align: center;
             max-width: 380px;
             width: 90%;
         }
-
         .nav-tab-active {
             background-color: #ffffff !important;
-            color: var(--ocean-blue) !important;
+            color: #5C4643 !important;
             font-weight: 800 !important;
             box-shadow: 0 2px 6px rgba(0,0,0,0.12);
         }
-
         .time-tab-active {
-            background-color: var(--ocean-blue) !important;
+            background-color: #BFA191 !important;
             color: #ffffff !important;
             font-weight: 700 !important;
         }
     </style>
 </head>
 <body class="min-h-screen antialiased">
-
     <!-- 隱藏的檔案上傳輸入框 -->
     <input type="file" id="import-file-input" accept=".json" class="hidden" onchange="handleFileImport(event)">
-
     <!-- 🔐 密碼驗證畫面 -->
     <div id="login-overlay">
-        <div class="login-card border border-[#D4C5B9]">
-            <div class="text-[#4B7B94] text-5xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
-            <h2 class="text-2xl font-black text-[#2D3748] mb-1 tracking-tight">間接服務系統</h2>
-            <p class="text-sm font-medium text-slate-500 mb-5">請輸入存取密碼以存取資料</p>
-            <input type="password" id="pwd-input" placeholder="請輸入密碼" onkeydown="if(event.key==='Enter') checkPassword()" class="w-full px-4 py-3 border-2 border-[#D4C5B9] rounded-xl text-center text-base font-bold text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none mb-4 transition">
-            <button onclick="checkPassword()" class="w-full bg-[#4B7B94] hover:bg-[#3d677d] text-white font-bold py-3 rounded-xl text-base transition shadow-md active:scale-[0.98]">解鎖登入</button>
+        <div class="login-card border border-[#DDC3B5]">
+            <div class="text-[#BFA191] text-5xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
+            <h2 class="text-2xl font-black text-[#5C4643] mb-1 tracking-tight">間接服務系統</h2>
+            <p class="text-sm font-medium text-[#8C7572] mb-5">請輸入存取密碼以存取資料</p>
+            <input type="password" id="pwd-input" placeholder="請輸入密碼" onkeydown="if(event.key==='Enter') checkPassword()" class="w-full px-4 py-3 border-2 border-[#DDC3B5] rounded-xl text-center text-base font-bold text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none mb-4 transition">
+            <button onclick="checkPassword()" class="w-full bg-[#BFA191] hover:bg-[#a68979] text-white font-bold py-3 rounded-xl text-base transition shadow-md active:scale-[0.98]">解鎖登入</button>
             <div id="error-msg" class="text-rose-500 font-bold text-sm mt-3 hidden flex items-center justify-center gap-1"><i class="fa-solid fa-circle-exclamation"></i> 密碼錯誤，請重新輸入！</div>
         </div>
     </div>
-
     <!-- 📱 主要系統區域 -->
     <div id="main-app" class="hidden min-h-screen flex flex-col">
         <!-- 頂部導覽列與頁籤 -->
-        <nav class="bg-[#4B7B94] text-white shadow-md sticky top-0 z-50">
+        <nav class="bg-[#BFA191] text-white shadow-md sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-col md:flex-row justify-between items-center gap-3">
                 <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
                     <div class="flex items-center space-x-2.5">
-                        <i class="fa-solid fa-clock-rotate-left text-2xl text-[#F2CC8F]"></i>
+                        <i class="fa-solid fa-clock-rotate-left text-2xl text-[#F3E1E1]"></i>
                         <h1 class="text-lg sm:text-xl font-black tracking-wide whitespace-nowrap text-white">間接服務系統</h1>
                     </div>
                     <!-- 頁籤按鈕 -->
@@ -109,19 +102,18 @@
                         </button>
                     </div>
                 </div>
-
                 <!-- 資料備份匯入與匯出按鈕 -->
                 <div class="flex flex-wrap items-center space-x-1.5 w-full md:w-auto justify-end border-t border-white/20 pt-2 md:pt-0 md:border-none">
-                    <button onclick="triggerImport()" class="bg-[#FAF7F2] hover:bg-[#ede6dc] text-[#2D3748] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="從備份檔復原資料">
+                    <button onclick="triggerImport()" class="bg-[#F7F2EC] hover:bg-[#ebdcd0] text-[#5C4643] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="從備份檔復原資料">
                         <i class="fa-solid fa-file-import"></i> 匯入備份
                     </button>
-                    <button onclick="exportBackupJSON()" class="bg-[#D4C5B9] hover:bg-[#c2b0a3] text-[#2D3748] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="下載完整資料備份">
+                    <button onclick="exportBackupJSON()" class="bg-[#DDC3B5] hover:bg-[#caac9c] text-[#5C4643] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="下載完整資料備份">
                         <i class="fa-solid fa-floppy-disk"></i> 備份資料
                     </button>
-                    <button onclick="exportWord()" class="bg-[#E07A5F] hover:bg-[#d0674c] text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                    <button onclick="exportWord()" class="bg-[#EBC7C4] hover:bg-[#d8a8a4] text-[#5C4643] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
                         <i class="fa-solid fa-file-word"></i> 匯出 Word
                     </button>
-                    <button onclick="exportCSV()" class="bg-[#81B29A] hover:bg-[#6fa38b] text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                    <button onclick="exportCSV()" class="bg-[#F3E1E1] hover:bg-[#e6c9c9] text-[#5C4643] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
                         <i class="fa-solid fa-file-excel"></i> 匯出 CSV
                     </button>
                     <button onclick="logout()" class="bg-black/20 hover:bg-black/30 text-white px-2 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ml-1" title="登出系統">
@@ -130,84 +122,76 @@
                 </div>
             </div>
         </nav>
-
         <!-- 主要內容區 -->
         <main class="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6 flex-1 w-full">
-
             <!-- PAGE 1: 間接服務頁面 -->
             <div id="page-indirect-service" class="max-w-3xl mx-auto">
-                <section class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 sm:p-7">
-                    <h2 class="text-xl font-black text-[#2D3748] border-b-2 border-[#FAF7F2] pb-3 mb-5 flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square text-[#4B7B94]"></i>
+                <section class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-7">
+                    <h2 class="text-xl font-black text-[#5C4643] border-b-2 border-[#F7F2EC] pb-3 mb-5 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square text-[#BFA191]"></i>
                         <span id="form-title">新增間接服務紀錄</span>
                     </h2>
-
                     <form id="record-form" onsubmit="handleFormSubmit(event)" class="space-y-5">
                         <input type="hidden" id="edit-id" value="">
-
                         <!-- 日期 & 時數 -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-bold text-[#2D3748] mb-1.5">日期 <span class="text-[#E07A5F]">*</span></label>
-                                <input type="date" id="input-date" required class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none transition bg-white">
+                                <label class="block text-sm font-bold text-[#5C4643] mb-1.5">日期 <span class="text-[#D4A3A0]">*</span></label>
+                                <input type="date" id="input-date" required class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none transition bg-white">
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-[#2D3748] mb-1.5">服務時數 (分鐘) <span class="text-[#E07A5F]">*</span></label>
-                                <input type="number" id="input-minutes" min="0" step="5" required placeholder="請輸入分鐘數" class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none transition bg-white">
+                                <label class="block text-sm font-bold text-[#5C4643] mb-1.5">服務時數 (分鐘) <span class="text-[#D4A3A0]">*</span></label>
+                                <input type="number" id="input-minutes" min="0" step="5" required placeholder="請輸入分鐘數" class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none transition bg-white">
                                 <div class="flex gap-1.5 mt-2 flex-wrap">
-                                    <button type="button" onclick="addMinutes(30)" class="text-xs bg-[#4B7B94]/10 hover:bg-[#4B7B94]/20 text-[#4B7B94] font-bold px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">+30分</button>
-                                    <button type="button" onclick="addMinutes(60)" class="text-xs bg-[#4B7B94]/10 hover:bg-[#4B7B94]/20 text-[#4B7B94] font-bold px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">+60分</button>
-                                    <button type="button" onclick="addMinutes(120)" class="text-xs bg-[#4B7B94]/10 hover:bg-[#4B7B94]/20 text-[#4B7B94] font-bold px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">+120分</button>
-                                    <button type="button" onclick="addMinutes(180)" class="text-xs bg-[#4B7B94]/10 hover:bg-[#4B7B94]/20 text-[#4B7B94] font-bold px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">+180分</button>
+                                    <button type="button" onclick="addMinutes(30)" class="text-xs bg-[#DDC3B5]/30 hover:bg-[#DDC3B5]/50 text-[#5C4643] font-bold px-2.5 py-1 rounded-lg border border-[#DDC3B5]/60 transition">+30分</button>
+                                    <button type="button" onclick="addMinutes(60)" class="text-xs bg-[#DDC3B5]/30 hover:bg-[#DDC3B5]/50 text-[#5C4643] font-bold px-2.5 py-1 rounded-lg border border-[#DDC3B5]/60 transition">+60分</button>
+                                    <button type="button" onclick="addMinutes(120)" class="text-xs bg-[#DDC3B5]/30 hover:bg-[#DDC3B5]/50 text-[#5C4643] font-bold px-2.5 py-1 rounded-lg border border-[#DDC3B5]/60 transition">+120分</button>
+                                    <button type="button" onclick="addMinutes(180)" class="text-xs bg-[#DDC3B5]/30 hover:bg-[#DDC3B5]/50 text-[#5C4643] font-bold px-2.5 py-1 rounded-lg border border-[#DDC3B5]/60 transition">+180分</button>
                                 </div>
                             </div>
                         </div>
-
                         <!-- 節次選擇 -->
                         <div>
-                            <label class="block text-sm font-bold text-[#2D3748] mb-1.5">節次 (可多選)</label>
+                            <label class="block text-sm font-bold text-[#5C4643] mb-1.5">節次 (可多選)</label>
                             <div class="flex flex-wrap gap-2" id="period-chips">
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '第一節')">第一節</button>
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '第二節')">第二節</button>
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '第三節')">第三節</button>
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '第四節')">第四節</button>
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '中午')">中午</button>
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '第五節')">第五節</button>
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '第六節')">第六節</button>
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '第七節')">第七節</button>
-                                <button type="button" class="chip border-2 border-[#D4C5B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-slate-700 bg-white" onclick="togglePeriod(this, '第八節')">第八節</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '第一節')">第一節</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '第二節')">第二節</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '第三節')">第三節</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '第四節')">第四節</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '中午')">中午</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '第五節')">第五節</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '第六節')">第六節</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '第七節')">第七節</button>
+                                <button type="button" class="chip border-2 border-[#DDC3B9]/60 text-sm font-medium px-3 py-1.5 rounded-xl text-[#5C4643] bg-white" onclick="togglePeriod(this, '第八節')">第八節</button>
                             </div>
-                            <input type="text" id="input-period" placeholder="自訂或手動調整節次描述..." class="w-full mt-2.5 px-3.5 py-2 border-2 border-[#D4C5B9]/60 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                            <input type="text" id="input-period" placeholder="自訂或手動調整節次描述..." class="w-full mt-2.5 px-3.5 py-2 border-2 border-[#DDC3B9]/60 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                         </div>
-
                         <!-- 地點 -->
                         <div>
-                            <label class="block text-sm font-bold text-[#2D3748] mb-1.5">地點 (可手動輸入或選擇)</label>
+                            <label class="block text-sm font-bold text-[#5C4643] mb-1.5">地點 (可手動輸入或選擇)</label>
                             <div class="flex gap-1.5 mb-2 flex-wrap">
-                                <button type="button" onclick="setPlace('多元教室')" class="text-xs font-bold bg-[#4B7B94]/10 text-[#4B7B94] hover:bg-[#4B7B94]/20 px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">多元教室</button>
-                                <button type="button" onclick="setPlace('個諮室')" class="text-xs font-bold bg-[#4B7B94]/10 text-[#4B7B94] hover:bg-[#4B7B94]/20 px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">個諮室</button>
-                                <button type="button" onclick="setPlace('團體諮商室')" class="text-xs font-bold bg-[#4B7B94]/10 text-[#4B7B94] hover:bg-[#4B7B94]/20 px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">團體諮商室</button>
-                                <button type="button" onclick="setPlace('輔導室')" class="text-xs font-bold bg-[#4B7B94]/10 text-[#4B7B94] hover:bg-[#4B7B94]/20 px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">輔導室</button>
-                                <button type="button" onclick="setPlace('多功能會議廳5F')" class="text-xs font-bold bg-[#4B7B94]/10 text-[#4B7B94] hover:bg-[#4B7B94]/20 px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">多功能會議廳5F</button>
-                                <button type="button" onclick="setPlace('第一會議室5F')" class="text-xs font-bold bg-[#4B7B94]/10 text-[#4B7B94] hover:bg-[#4B7B94]/20 px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">第一會議室5F</button>
-                                <button type="button" onclick="setPlace('第三會議室 6F')" class="text-xs font-bold bg-[#4B7B94]/10 text-[#4B7B94] hover:bg-[#4B7B94]/20 px-2.5 py-1 rounded-lg border border-[#4B7B94]/30 transition">第三會議室 6F</button>
+                                <button type="button" onclick="setPlace('多元教室')" class="text-xs font-bold bg-[#EBC7C4]/30 text-[#5C4643] hover:bg-[#EBC7C4]/50 px-2.5 py-1 rounded-lg border border-[#EBC7C4]/70 transition">多元教室</button>
+                                <button type="button" onclick="setPlace('個諮室')" class="text-xs font-bold bg-[#EBC7C4]/30 text-[#5C4643] hover:bg-[#EBC7C4]/50 px-2.5 py-1 rounded-lg border border-[#EBC7C4]/70 transition">個諮室</button>
+                                <button type="button" onclick="setPlace('團體諮商室')" class="text-xs font-bold bg-[#EBC7C4]/30 text-[#5C4643] hover:bg-[#EBC7C4]/50 px-2.5 py-1 rounded-lg border border-[#EBC7C4]/70 transition">團體諮商室</button>
+                                <button type="button" onclick="setPlace('輔導室')" class="text-xs font-bold bg-[#EBC7C4]/30 text-[#5C4643] hover:bg-[#EBC7C4]/50 px-2.5 py-1 rounded-lg border border-[#EBC7C4]/70 transition">輔導室</button>
+                                <button type="button" onclick="setPlace('多功能會議廳5F')" class="text-xs font-bold bg-[#EBC7C4]/30 text-[#5C4643] hover:bg-[#EBC7C4]/50 px-2.5 py-1 rounded-lg border border-[#EBC7C4]/70 transition">多功能會議廳5F</button>
+                                <button type="button" onclick="setPlace('第一會議室5F')" class="text-xs font-bold bg-[#EBC7C4]/30 text-[#5C4643] hover:bg-[#EBC7C4]/50 px-2.5 py-1 rounded-lg border border-[#EBC7C4]/70 transition">第一會議室5F</button>
+                                <button type="button" onclick="setPlace('第三會議室 6F')" class="text-xs font-bold bg-[#EBC7C4]/30 text-[#5C4643] hover:bg-[#EBC7C4]/50 px-2.5 py-1 rounded-lg border border-[#EBC7C4]/70 transition">第三會議室 6F</button>
                             </div>
-                            <input type="text" id="input-place" list="place-suggestions" placeholder="請輸入或選擇地點（關鍵字自動提示歷史）" class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                            <input type="text" id="input-place" list="place-suggestions" placeholder="請輸入或選擇地點（關鍵字自動提示歷史）" class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                             <datalist id="place-suggestions"></datalist>
                         </div>
-
                         <!-- 資源班學生/人員 -->
                         <div>
-                            <label class="block text-sm font-bold text-[#2D3748] mb-1.5">資源班學生 / 老師 / 家長</label>
-                            <div class="max-h-48 overflow-y-auto border-2 border-[#D4C5B9]/60 rounded-xl p-2.5 bg-[#FAF7F2] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 mb-2.5" id="student-chips"></div>
-                            <input type="text" id="input-students" list="student-suggestions" placeholder="自訂或補充人員（關鍵字自動提示歷史）" class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                            <label class="block text-sm font-bold text-[#5C4643] mb-1.5">資源班學生 / 老師 / 家長</label>
+                            <div class="max-h-48 overflow-y-auto border-2 border-[#DDC3B9]/60 rounded-xl p-2.5 bg-[#F7F2EC] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 mb-2.5" id="student-chips"></div>
+                            <input type="text" id="input-students" list="student-suggestions" placeholder="自訂或補充人員（關鍵字自動提示歷史）" class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                             <datalist id="student-suggestions"></datalist>
                         </div>
-
                         <!-- 服務對象 -->
                         <div>
-                            <label class="block text-sm font-bold text-[#2D3748] mb-1.5">服務對象</label>
-                            <select id="input-target" class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                            <label class="block text-sm font-bold text-[#5C4643] mb-1.5">服務對象</label>
+                            <select id="input-target" class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                                 <option value="資源班學生">資源班學生</option>
                                 <option value="普通班學生">普通班學生</option>
                                 <option value="普通班導師/教師">普通班導師/教師</option>
@@ -218,12 +202,11 @@
                                 <option value="其他">其他</option>
                             </select>
                         </div>
-
                         <!-- 間接服務類型與項目 -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-bold text-[#2D3748] mb-1.5">間接服務類型</label>
-                                <select id="input-main-type" onchange="updateSubTypes()" class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                                <label class="block text-sm font-bold text-[#5C4643] mb-1.5">間接服務類型</label>
+                                <select id="input-main-type" onchange="updateSubTypes()" class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                                     <option value="1. 需求評估與處理">1. 需求評估與處理</option>
                                     <option value="2. 個別晤談與指導">2. 個別晤談與指導</option>
                                     <option value="3. 諮詢服務">3. 諮詢服務</option>
@@ -232,31 +215,28 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-[#2D3748] mb-1.5">間接服務項目</label>
-                                <select id="input-sub-type" class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                                <label class="block text-sm font-bold text-[#5C4643] mb-1.5">間接服務項目</label>
+                                <select id="input-sub-type" class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                                 </select>
                             </div>
                         </div>
-
                         <!-- 間接服務成效 -->
                         <div>
-                            <label class="block text-sm font-bold text-[#2D3748] mb-1.5">間接服務成效</label>
-                            <select id="input-result" class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                            <label class="block text-sm font-bold text-[#5C4643] mb-1.5">間接服務成效</label>
+                            <select id="input-result" class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                                 <option value="持續進行">持續進行</option>
                                 <option value="另尋方案">另尋方案</option>
                                 <option value="已結案 / 完成">已結案 / 完成</option>
                                 <option value="其它">其它</option>
                             </select>
                         </div>
-
                         <!-- 服務內容摘要 -->
                         <div>
-                            <label class="block text-sm font-bold text-[#2D3748] mb-1.5">服務內容摘要</label>
-                            <textarea id="input-summary" rows="3" placeholder="請輸入詳細摘要..." class="w-full px-3.5 py-2.5 border-2 border-[#D4C5B9]/60 rounded-xl text-base font-medium text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white"></textarea>
+                            <label class="block text-sm font-bold text-[#5C4643] mb-1.5">服務內容摘要</label>
+                            <textarea id="input-summary" rows="3" placeholder="請輸入詳細摘要..." class="w-full px-3.5 py-2.5 border-2 border-[#DDC3B9]/60 rounded-xl text-base font-medium text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white"></textarea>
                         </div>
-
                         <div class="flex gap-3 pt-3">
-                            <button type="submit" id="btn-submit" class="flex-1 bg-[#4B7B94] hover:bg-[#3d677d] text-white font-bold py-3 px-4 rounded-xl text-base transition shadow-md active:scale-[0.99]">
+                            <button type="submit" id="btn-submit" class="flex-1 bg-[#BFA191] hover:bg-[#a68979] text-white font-bold py-3 px-4 rounded-xl text-base transition shadow-md active:scale-[0.99]">
                                 新增紀錄
                             </button>
                             <button type="button" id="btn-cancel" onclick="resetForm()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-5 rounded-xl text-base transition">
@@ -266,176 +246,159 @@
                     </form>
                 </section>
             </div>
-
             <!-- PAGE 2: 間接服務統計頁面 -->
             <div id="page-indirect-stats" class="hidden space-y-6">
-
                 <!-- 時間範圍選擇器工具列 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <i class="fa-solid fa-calendar-days text-[#4B7B94] text-xl"></i>
-                        <span class="font-black text-[#2D3748] text-base">時間區間篩選：</span>
+                        <i class="fa-solid fa-calendar-days text-[#BFA191] text-xl"></i>
+                        <span class="font-black text-[#5C4643] text-base">時間區間篩選：</span>
                     </div>
-
                     <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-                        <div class="flex bg-[#FAF7F2] p-1 rounded-xl w-full sm:w-auto justify-center border border-[#D4C5B9]/40">
-                            <button type="button" id="time-tab-day" onclick="setTimeFilterMode('day')" class="px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition text-slate-700">
+                        <div class="flex bg-[#F7F2EC] p-1 rounded-xl w-full sm:w-auto justify-center border border-[#DDC3B9]/40">
+                            <button type="button" id="time-tab-day" onclick="setTimeFilterMode('day')" class="px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition text-[#5C4643]">
                                 每日紀錄
                             </button>
-                            <button type="button" id="time-tab-month" onclick="setTimeFilterMode('month')" class="px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition text-slate-700 time-tab-active">
+                            <button type="button" id="time-tab-month" onclick="setTimeFilterMode('month')" class="px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition text-[#5C4643] time-tab-active">
                                 每月紀錄
                             </button>
-                            <button type="button" id="time-tab-year" onclick="setTimeFilterMode('year')" class="px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition text-slate-700">
+                            <button type="button" id="time-tab-year" onclick="setTimeFilterMode('year')" class="px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition text-[#5C4643]">
                                 每年紀錄
                             </button>
                         </div>
-
                         <div class="w-full sm:w-auto">
-                            <input type="date" id="stats-date-picker" onchange="renderAllCharts()" class="hidden w-full sm:w-auto px-3.5 py-1.5 border-2 border-[#D4C5B9] rounded-xl text-sm font-bold text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
-                            <input type="month" id="stats-month-picker" onchange="renderAllCharts()" class="w-full sm:w-auto px-3.5 py-1.5 border-2 border-[#D4C5B9] rounded-xl text-sm font-bold text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
-                            <select id="stats-year-picker" onchange="renderAllCharts()" class="hidden w-full sm:w-auto px-3.5 py-1.5 border-2 border-[#D4C5B9] rounded-xl text-sm font-bold text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                            <input type="date" id="stats-date-picker" onchange="renderAllCharts()" class="hidden w-full sm:w-auto px-3.5 py-1.5 border-2 border-[#DDC3B9] rounded-xl text-sm font-bold text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
+                            <input type="month" id="stats-month-picker" onchange="renderAllCharts()" class="w-full sm:w-auto px-3.5 py-1.5 border-2 border-[#DDC3B9] rounded-xl text-sm font-bold text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
+                            <select id="stats-year-picker" onchange="renderAllCharts()" class="hidden w-full sm:w-auto px-3.5 py-1.5 border-2 border-[#DDC3B9] rounded-xl text-sm font-bold text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                             </select>
                         </div>
                     </div>
                 </div>
-
                 <!-- 全校總體 KPI 卡片 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 sm:p-6">
-                    <h2 class="text-lg font-black text-[#2D3748] mb-4 flex items-center justify-between">
+                <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-6">
+                    <h2 class="text-lg font-black text-[#5C4643] mb-4 flex items-center justify-between">
                         <span class="flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-[#4B7B94]"></i>
+                            <i class="fa-solid fa-chart-pie text-[#BFA191]"></i>
                             <span>全校服務總體統計</span>
                         </span>
-                        <span class="text-xs font-bold text-[#4B7B94] bg-[#4B7B94]/10 px-2.5 py-1 rounded-lg border border-[#4B7B94]/30" id="current-filter-label">當月紀錄</span>
+                        <span class="text-xs font-bold text-[#5C4643] bg-[#F3E1E1] px-2.5 py-1 rounded-lg border border-[#EBC7C4]" id="current-filter-label">當月紀錄</span>
                     </h2>
-
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="bg-[#4B7B94]/10 border-2 border-[#4B7B94]/30 rounded-2xl p-4 text-center">
-                            <div class="text-xs font-bold text-[#4B7B94] mb-1">總服務筆數</div>
-                            <div class="text-3xl font-black text-[#4B7B94]" id="kpi-count">0</div>
+                        <div class="bg-[#F3E1E1]/60 border-2 border-[#EBC7C4] rounded-2xl p-4 text-center">
+                            <div class="text-xs font-bold text-[#8C7572] mb-1">總服務筆數</div>
+                            <div class="text-3xl font-black text-[#5C4643]" id="kpi-count">0</div>
                         </div>
-                        <div class="bg-[#E07A5F]/10 border-2 border-[#E07A5F]/30 rounded-2xl p-4 text-center">
-                            <div class="text-xs font-bold text-[#E07A5F] mb-1">累積總分鐘數</div>
-                            <div class="text-3xl font-black text-[#E07A5F]" id="kpi-minutes">0 <span class="text-sm font-bold">分</span></div>
+                        <div class="bg-[#DDC3B5]/40 border-2 border-[#DDC3B5] rounded-2xl p-4 text-center">
+                            <div class="text-xs font-bold text-[#8C7572] mb-1">累積總分鐘數</div>
+                            <div class="text-3xl font-black text-[#5C4643]" id="kpi-minutes">0 <span class="text-sm font-bold">分</span></div>
                         </div>
-                        <div class="bg-[#81B29A]/15 border-2 border-[#81B29A]/40 rounded-2xl p-4 text-center">
-                            <div class="text-xs font-bold text-[#457b68] mb-1">折算總節數 (60分/節)</div>
-                            <div class="text-3xl font-black text-[#457b68]" id="kpi-periods">0 <span class="text-sm font-bold">節</span></div>
+                        <div class="bg-[#EBC7C4]/50 border-2 border-[#EBC7C4] rounded-2xl p-4 text-center">
+                            <div class="text-xs font-bold text-[#8C7572] mb-1">折算總節數 (60分/節)</div>
+                            <div class="text-3xl font-black text-[#5C4643]" id="kpi-periods">0 <span class="text-sm font-bold">節</span></div>
                         </div>
                     </div>
                 </div>
-
                 <!-- 需求分析卡片 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 sm:p-6">
-                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4 border-b border-[#FAF7F2] pb-3">
+                <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-6">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4 border-b border-[#F7F2EC] pb-3">
                         <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-users-viewfinder text-[#E07A5F] text-xl"></i>
-                            <h2 class="text-lg font-black text-[#2D3748]">學生間接服務需求分析</h2>
+                            <i class="fa-solid fa-users-viewfinder text-[#D4A3A0] text-xl"></i>
+                            <h2 class="text-lg font-black text-[#5C4643]">學生間接服務需求分析</h2>
                         </div>
-                        <div class="flex bg-[#FAF7F2] p-1 rounded-xl gap-1 self-start sm:self-auto border border-[#D4C5B9]/40">
-                            <button type="button" id="btn-mode-all" onclick="switchAnalysisMode('all')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-[#4B7B94] text-white shadow-sm">
+                        <div class="flex bg-[#F7F2EC] p-1 rounded-xl gap-1 self-start sm:self-auto border border-[#DDC3B9]/40">
+                            <button type="button" id="btn-mode-all" onclick="switchAnalysisMode('all')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-[#BFA191] text-white shadow-sm">
                                 📊 全校學生總表
                             </button>
-                            <button type="button" id="btn-mode-single" onclick="switchAnalysisMode('single')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-slate-700 hover:text-slate-900">
+                            <button type="button" id="btn-mode-single" onclick="switchAnalysisMode('single')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-[#5C4643] hover:text-[#2D3748]">
                                 👤 個別學生案件
                             </button>
                         </div>
                     </div>
-
                     <div id="view-all-header" class="mb-3 text-xs font-bold text-slate-600 flex justify-between items-center flex-wrap gap-1">
                         <span>顯示每位特教生累積之服務案件筆數與時間 (小時)</span>
-                        <span class="text-[#E07A5F] font-extrabold">作為全校整體需求輪廓參照</span>
+                        <span class="text-[#D4A3A0] font-extrabold">作為全校整體需求輪廓參照</span>
                     </div>
-
                     <div id="view-single-controls" class="hidden mb-4">
-                        <div class="flex items-center justify-between mb-3 bg-[#E07A5F]/10 p-3 rounded-xl border border-[#E07A5F]/30">
-                            <span class="text-sm font-bold text-[#2D3748]">選擇分析對象：</span>
-                            <select id="student-filter" onchange="renderAnalysisChart()" class="px-3 py-1.5 border-2 border-[#D4C5B9] rounded-xl text-sm font-bold text-[#2D3748] focus:ring-2 focus:ring-[#4B7B94] outline-none bg-white">
+                        <div class="flex items-center justify-between mb-3 bg-[#F3E1E1]/60 p-3 rounded-xl border border-[#EBC7C4]">
+                            <span class="text-sm font-bold text-[#5C4643]">選擇分析對象：</span>
+                            <select id="student-filter" onchange="renderAnalysisChart()" class="px-3 py-1.5 border-2 border-[#DDC3B9] rounded-xl text-sm font-bold text-[#5C4643] focus:ring-2 focus:ring-[#BFA191] outline-none bg-white">
                             </select>
                         </div>
-
                         <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-white border-2 border-[#E07A5F]/20 rounded-xl p-3 text-center">
-                                <div class="text-xs font-bold text-[#E07A5F]">該生服務筆數</div>
-                                <div class="text-xl font-black text-[#E07A5F]" id="stu-kpi-count">0</div>
+                            <div class="bg-white border-2 border-[#EBC7C4] rounded-xl p-3 text-center">
+                                <div class="text-xs font-bold text-[#8C7572]">該生服務筆數</div>
+                                <div class="text-xl font-black text-[#5C4643]" id="stu-kpi-count">0</div>
                             </div>
-                            <div class="bg-white border-2 border-[#E07A5F]/20 rounded-xl p-3 text-center">
-                                <div class="text-xs font-bold text-[#E07A5F]">累積服務時間</div>
-                                <div class="text-xl font-black text-[#E07A5F]" id="stu-kpi-minutes">0 <span class="text-xs font-bold">分</span></div>
+                            <div class="bg-white border-2 border-[#EBC7C4] rounded-xl p-3 text-center">
+                                <div class="text-xs font-bold text-[#8C7572]">累積服務時間</div>
+                                <div class="text-xl font-black text-[#5C4643]" id="stu-kpi-minutes">0 <span class="text-xs font-bold">分</span></div>
                             </div>
-                            <div class="bg-white border-2 border-[#E07A5F]/20 rounded-xl p-3 text-center">
-                                <div class="text-xs font-bold text-[#E07A5F]">建議需求折算</div>
-                                <div class="text-xl font-black text-[#E07A5F]" id="stu-kpi-periods">0 <span class="text-xs font-bold">節</span></div>
+                            <div class="bg-white border-2 border-[#EBC7C4] rounded-xl p-3 text-center">
+                                <div class="text-xs font-bold text-[#8C7572]">建議需求折算</div>
+                                <div class="text-xl font-black text-[#5C4643]" id="stu-kpi-periods">0 <span class="text-xs font-bold">節</span></div>
                             </div>
                         </div>
                     </div>
-
                     <div class="h-72 relative">
                         <canvas id="chart-analysis"></canvas>
                     </div>
                 </div>
-
                 <!-- 四大統計圖表 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 sm:p-5">
-                        <h3 class="text-xs font-black text-slate-500 uppercase tracking-wider mb-3">服務對象分布</h3>
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-5">
+                        <h3 class="text-xs font-black text-[#8C7572] uppercase tracking-wider mb-3">服務對象分布</h3>
                         <div class="h-64 relative">
                             <canvas id="chart-target"></canvas>
                         </div>
-                        <div id="target-legend" class="mt-3 grid grid-cols-1 gap-1.5 text-xs font-semibold text-slate-700 border-t border-[#FAF7F2] pt-3 max-h-28 overflow-y-auto"></div>
+                        <div id="target-legend" class="mt-3 grid grid-cols-1 gap-1.5 text-xs font-semibold text-[#5C4643] border-t border-[#F7F2EC] pt-3 max-h-28 overflow-y-auto"></div>
                     </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 sm:p-5">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-5">
                         <div class="flex justify-between items-center mb-3">
-                            <h3 class="text-xs font-black text-slate-500 uppercase tracking-wider">間接服務類型統計 (固定1-5排序)</h3>
-                            <div class="flex bg-[#FAF7F2] p-0.5 rounded-lg gap-0.5 border border-[#D4C5B9]/40">
-                                <button type="button" id="btn-service-main" onclick="switchServiceTypeChart('main')" class="px-2.5 py-1 text-xs font-bold rounded transition bg-[#4B7B94] text-white">類型</button>
-                                <button type="button" id="btn-service-sub" onclick="switchServiceTypeChart('sub')" class="px-2.5 py-1 text-xs font-bold rounded transition text-slate-700 hover:text-slate-900">項目</button>
+                            <h3 class="text-xs font-black text-[#8C7572] uppercase tracking-wider">間接服務類型統計 (固定1-5排序)</h3>
+                            <div class="flex bg-[#F7F2EC] p-0.5 rounded-lg gap-0.5 border border-[#DDC3B9]/40">
+                                <button type="button" id="btn-service-main" onclick="switchServiceTypeChart('main')" class="px-2.5 py-1 text-xs font-bold rounded transition bg-[#BFA191] text-white">類型</button>
+                                <button type="button" id="btn-service-sub" onclick="switchServiceTypeChart('sub')" class="px-2.5 py-1 text-xs font-bold rounded transition text-[#5C4643] hover:text-[#2D3748]">項目</button>
                             </div>
                         </div>
                         <div class="h-64 relative">
                             <canvas id="chart-type"></canvas>
                         </div>
                     </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 sm:p-5">
-                        <h3 class="text-xs font-black text-slate-500 uppercase tracking-wider mb-3">地點時間占比 (小時)</h3>
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-5">
+                        <h3 class="text-xs font-black text-[#8C7572] uppercase tracking-wider mb-3">地點時間占比 (小時)</h3>
                         <div class="h-64 relative">
                             <canvas id="chart-place"></canvas>
                         </div>
                     </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 sm:p-5">
-                        <h3 class="text-xs font-black text-slate-500 uppercase tracking-wider mb-3" id="daily-chart-title">累積服務時間 (小時)</h3>
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-5">
+                        <h3 class="text-xs font-black text-[#8C7572] uppercase tracking-wider mb-3" id="daily-chart-title">累積服務時間 (小時)</h3>
                         <div class="h-64 relative">
                             <canvas id="chart-daily"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- PAGE 3: 間接服務紀錄頁面 -->
             <div id="page-indirect-record" class="hidden">
-                <div class="bg-white rounded-2xl shadow-sm border border-[#D4C5B9]/60 p-4 sm:p-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#FAF7F2] pb-4 mb-4 gap-4">
+                <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#F7F2EC] pb-4 mb-4 gap-4">
                         <div>
-                            <h2 class="text-xl font-black text-[#2D3748] flex items-center gap-2">
-                                <i class="fa-solid fa-list-check text-[#4B7B94]"></i>
+                            <h2 class="text-xl font-black text-[#5C4643] flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-[#BFA191]"></i>
                                 <span>間接服務紀錄明細表</span>
                             </h2>
-                            <p class="text-xs font-medium text-slate-500 mt-1">完整歷史紀錄清單，可直接進行編輯、刪除或一鍵清空。</p>
+                            <p class="text-xs font-medium text-[#8C7572] mt-1">完整歷史紀錄清單，可直接進行編輯、刪除或一鍵清空。</p>
                         </div>
-
                         <!-- 操作按鈕與排序選單 -->
                         <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-                            <button onclick="clearAllData()" class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                            <button onclick="clearAllData()" class="bg-rose-400 hover:bg-rose-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-trash-can"></i> 清空所有資料
                             </button>
-                            <button onclick="restoreExcelData()" class="bg-[#4B7B94] hover:bg-[#3d677d] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="恢復Excel 10月份15筆完整紀錄">
+                            <button onclick="restoreExcelData()" class="bg-[#BFA191] hover:bg-[#a68979] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="恢復Excel 10月份15筆完整紀錄">
                                 <i class="fa-solid fa-rotate-left"></i> 復原10月 Excel 資料
                             </button>
-                            <div class="flex items-center gap-1.5 bg-[#FAF7F2] p-1.5 rounded-xl border border-[#D4C5B9]/50">
-                                <select id="sort-field-picker" onchange="renderApp()" class="px-2 py-1 border border-[#D4C5B9] rounded-lg text-xs font-bold text-[#2D3748] outline-none bg-white">
+                            <div class="flex items-center gap-1.5 bg-[#F7F2EC] p-1.5 rounded-xl border border-[#DDC3B9]/50">
+                                <select id="sort-field-picker" onchange="renderApp()" class="px-2 py-1 border border-[#DDC3B9] rounded-lg text-xs font-bold text-[#5C4643] outline-none bg-white">
                                     <option value="date">依 日期</option>
                                     <option value="minutes">依 服務時數</option>
                                     <option value="place">依 地點</option>
@@ -443,17 +406,16 @@
                                     <option value="mainType">依 服務類型</option>
                                     <option value="result">依 服務成效</option>
                                 </select>
-                                <select id="sort-order-picker" onchange="renderApp()" class="px-2 py-1 border border-[#D4C5B9] rounded-lg text-xs font-bold text-[#2D3748] outline-none bg-white">
+                                <select id="sort-order-picker" onchange="renderApp()" class="px-2 py-1 border border-[#DDC3B9] rounded-lg text-xs font-bold text-[#5C4643] outline-none bg-white">
                                     <option value="desc">遞減 (新到舊)</option>
                                     <option value="asc">遞增 (舊到新)</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-
-                    <div class="overflow-x-auto rounded-xl border border-[#D4C5B9]/60">
-                        <table class="w-full text-left text-xs sm:text-sm text-slate-800">
-                            <thead class="bg-[#4B7B94]/10 text-[#2D3748] font-black border-b border-[#4B7B94]/20">
+                    <div class="overflow-x-auto rounded-xl border border-[#DDC3B9]/60">
+                        <table class="w-full text-left text-xs sm:text-sm text-[#5C4643]">
+                            <thead class="bg-[#F3E1E1]/80 text-[#5C4643] font-black border-b border-[#EBC7C4]">
                                 <tr>
                                     <th class="p-3 whitespace-nowrap">日期/節次</th>
                                     <th class="p-3 whitespace-nowrap">地點</th>
@@ -465,18 +427,15 @@
                                     <th class="p-3 text-center whitespace-nowrap">操作</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-body" class="divide-y divide-[#FAF7F2] bg-white"></tbody>
+                            <tbody id="table-body" class="divide-y divide-[#F7F2EC] bg-white"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
-
     <script>
         const TARGET_PASSWORD = "1234";
-
         const ORDERED_MAIN_TYPES = [
             "1. 需求評估與處理",
             "2. 個別晤談與指導",
@@ -484,7 +443,6 @@
             "4. 特殊學生狀況處理",
             "5. 其它"
         ];
-
         const SERVICE_MAP = {
             "1. 需求評估與處理": [
                 "1-1 個案資料的建立與管理",
@@ -514,31 +472,27 @@
                 "5-3 特殊教育宣導"
             ]
         };
-
-        const STUDENT_LIST = ["102 陳以芯", "104 許貴棠", "106 許芝瑀", "108 黃泊瑞", "110 蔡宜昌", "111 陳O豪", "113 張豐峻", "114 巫O升", "201 劉恩兆", "207 洪O恩", "209 鄭O煜", "215 張O恩", "301 廖浤宇", "303 吳O誠", "304 吳O恩", "307 陳睿禎", "311 黃政莆", "314 卓O諺", "314 鍾O軒", "315 戴O承", "315 林威成", "315 賴O睿", "315 鍾O靖"];
-
-        // 🌟 活潑色調圖表調色盤 (海洋藍、珊瑚粉、薄荷綠、太陽黃、淡紫)
-        const PALETTE = ['#4B7B94', '#E07A5F', '#81B29A', '#F2CC8F', '#D88C9A', '#3D5A80', '#98C1D9'];
-
-        // 📊 依據 Excel 100% 精準對齊之 15 筆完整數據
+        const STUDENT_LIST = ["102 陳O芯", "104 許O棠", "106 許O瑀", "108 黃O瑞", "110 蔡O昌", "111 陳O豪", "113 張O峻", "114 巫O升", "201 劉O兆", "207 洪O恩", "209 鄭O煜", "215 張O恩", "301 廖O宇", "303 吳O誠", "304 吳O恩", "307 陳O禎", "311 黃O莆", "314 卓O諺", "314 鍾O軒", "315 戴O承", "315 林O成", "315 賴O睿", "315 鍾O靖"];
+        // 依據品牌主題調色盤 (#F3E1E1, #DDC3B5, #EBC7C4, #F7F2EC, #BFA191, #D4A3A0)
+        const PALETTE = ['#DDC3B5', '#EBC7C4', '#BFA191', '#F3E1E1', '#D4A3A0', '#A68979', '#C2A39B'];
+        // 依據 Excel 100% 精準對齊之 15 筆完整數據
         const INITIAL_DATA = [
-            { id: "1", date: "2026/10/01", period: "第一節, 第二節, 第三節", place: "多元教室", minutes: 180, students: "108 黃泊瑞, 201 劉恩兆, 311 黃政莆", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "職能治療課程" },
-            { id: "2", date: "2026/10/05", period: "第六節", place: "多元教室", minutes: 60, students: "106 許芝瑀", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "國中時期曾有遭受同儕霸凌的經驗，當時雖曾向老師反映，但相關情況未獲得妥善處理，因此在面對目前的人際互動問題時，較容易感到擔心與不安，也對向師長求助有所顧慮。" },
-            { id: "3", date: "2026/10/06", period: "第六節, 第七節", place: "多元教室", minutes: 120, students: "113 張豐峻, 201 劉恩兆", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "語言治療課程" },
-            { id: "4", date: "2026/10/12", period: "第六節, 第七節", place: "多元教室", minutes: 120, students: "113 張豐峻, 201 劉恩兆", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "語言治療課程" },
-            { id: "5", date: "2026/10/22", period: "第六節, 第七節", place: "多元教室", minutes: 120, students: "104 許貴棠, 110 蔡宜昌", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "語言治療課程" },
-            { id: "6", date: "2026/10/19", period: "第三節", place: "多元教室", minutes: 60, students: "102 陳以芯", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "物理治療課程" },
+            { id: "1", date: "2026/10/01", period: "第一節, 第二節, 第三節", place: "多元教室", minutes: 180, students: "108 黃O瑞, 201 劉O兆, 311 黃O莆", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "職能治療課程" },
+            { id: "2", date: "2026/10/05", period: "第六節", place: "多元教室", minutes: 60, students: "106 許O瑀", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "國中時期曾有遭受同儕霸凌的經驗，當時雖曾向老師反映，但相關情況未獲得妥善處理，因此在面對目前的人際互動問題時，較容易感到擔心與不安，也對向師長求助有所顧慮。" },
+            { id: "3", date: "2026/10/06", period: "第六節, 第七節", place: "多元教室", minutes: 120, students: "113 張O峻, 201 劉O兆", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "語言治療課程" },
+            { id: "4", date: "2026/10/12", period: "第六節, 第七節", place: "多元教室", minutes: 120, students: "113 張O峻, 201 劉O兆", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "語言治療課程" },
+            { id: "5", date: "2026/10/22", period: "第六節, 第七節", place: "多元教室", minutes: 120, students: "104 許O棠, 110 蔡O昌", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "語言治療課程" },
+            { id: "6", date: "2026/10/19", period: "第三節", place: "多元教室", minutes: 60, students: "102 陳O芯", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "物理治療課程" },
             { id: "7", date: "2026/10/22", period: "第二節, 第三節, 第四節", place: "第三會議室 6F", minutes: 180, students: "108、201班同學", target: "普通班學生", mainType: "5. 其它", subType: "5-3 特殊教育宣導", result: "已結案 / 完成", summary: "入班宣導_國立彰化師範大學教授 - 洪雅惠教授" },
             { id: "8", date: "2026/10/29", period: "第二節, 第三節, 第四節", place: "第三會議室 6F", minutes: 180, students: "102、207、209班同學", target: "普通班學生", mainType: "5. 其它", subType: "5-3 特殊教育宣導", result: "已結案 / 完成", summary: "入班宣導_國立彰化師範大學教授 - 林千惠教授" },
             { id: "9", date: "2026/10/27", period: "第二節, 第三節", place: "校園參觀", minutes: 120, students: "鹿港國中", target: "鹿港國中特殊學生及老師及家長", mainType: "3. 諮詢服務", subType: "3-1 特殊教育諮詢服務", result: "已結案 / 完成", summary: "彰化縣立鹿港國中特教班師生及家長於本日蒞校參訪，活動安排校園無障礙環境導覽、適性實習課程體驗及升學轉銜洽詢，協助學生實地認識學習環境，並解答家長有關安置與支持服務之疑問。" },
             { id: "10", date: "2026/10/14", period: "第六節, 第七節, 第八節", place: "第三會議室 6F", minutes: 180, students: "全校老師", target: "普通班導師/教師", mainType: "5. 其它", subType: "5-3 特殊教育宣導", result: "已結案 / 完成", summary: "115學年度第1學期全校教師特教知能研習" },
             { id: "11", date: "2026/10/07", period: "第五節, 第六節", place: "多元教室", minutes: 120, students: "蔣孝美老師", target: "普通班導師/教師", mainType: "3. 諮詢服務", subType: "3-2 課程調整諮詢服務", result: "持續進行", summary: "討論特殊生個別化教學與評量相關事宜。" },
-            { id: "12", date: "2026/10/07", period: "第七節", place: "多元教室", minutes: 60, students: "113 張豐峻, 范老師", target: "普通班導師/教師", mainType: "3. 諮詢服務", subType: "3-2 課程調整諮詢服務", result: "持續進行", summary: "討論特殊生個別化教學與評量相關事宜" },
-            { id: "13", date: "2026/10/19", period: "中午, 第五節", place: "多元教室", minutes: 120, students: "307 陳睿禎", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "陳生因阿婆家陪伴 10 年的愛犬過世，內心十分難過與不捨，特前來尋求晤談與心理支持。" },
-            { id: "14", date: "2026/10/13", period: "第八節", place: "個諮室", minutes: 60, students: "315 林威成", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "了解林生對未來的想法與生涯規劃，過程中深入探討其個人的興趣、優勢以及對未來發展的期待，並協助其釐清可行目標與具體實踐步驟，鼓勵林生建立自主規劃的能力，後續將持續追蹤其目標執行狀況，提供相應的資源與引導。" },
-            { id: "15", date: "2026/10/14", period: "第五節", place: "學務處", minutes: 60, students: "301 廖浤宇, 301 廖浤宇媽媽", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "廖生近期因缺曠課過多及上課時間嚴重睡覺問題，由家長至校協助處理缺曠課與愛校服務相關事宜，並進行三方晤談，晤談過程中，與家長共同釐清廖生的生活作息與出缺勤狀況，並針對其未來的學習與生涯規劃進行深入討論，後續將持續追蹤廖生的課堂參與及作息改善情形，並與家長保持聯繫，共同引導學生建立穩定的學習習慣。" }
+            { id: "12", date: "2026/10/07", period: "第七節", place: "多元教室", minutes: 60, students: "113 張O峻, 范老師", target: "普通班導師/教師", mainType: "3. 諮詢服務", subType: "3-2 課程調整諮詢服務", result: "持續進行", summary: "討論特殊生個別化教學與評量相關事宜" },
+            { id: "13", date: "2026/10/19", period: "中午, 第五節", place: "多元教室", minutes: 120, students: "307 陳O禎", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "陳生因阿婆家陪伴 10 年的愛犬過世，內心十分難過與不捨，特前來尋求晤談與心理支持。" },
+            { id: "14", date: "2026/10/13", period: "第八節", place: "個諮室", minutes: 60, students: "315 林O成", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "了解林生對未來的想法與生涯規劃，過程中深入探討其個人的興趣、優勢以及對未來發展的期待，並協助其釐清可行目標與具體實踐步驟，鼓勵林生建立自主規劃的能力，後續將持續追蹤其目標執行狀況，提供相應的資源與引導。" },
+            { id: "15", date: "2026/10/14", period: "第五節", place: "學務處", minutes: 60, students: "301 廖O宇, 301 廖O宇媽媽", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "廖生近期因缺曠課過多及上課時間嚴重睡覺問題，由家長至校協助處理缺曠課與愛校服務相關事宜，並進行三方晤談，晤談過程中，與家長共同釐清廖生的生活作息與出缺勤狀況，並針對其未來的學習與生涯規劃進行深入討論，後續將持續追蹤廖生的課堂參與及作息改善情形，並與家長保持聯繫，共同引導學生建立穩定的學習習慣。" }
         ];
-
         let records = [];
         let selectedPeriods = [];
         let selectedStudents = [];
@@ -667,7 +621,6 @@
         function handleFileImport(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(evt) {
                 try {
@@ -770,7 +723,6 @@
                 if(btnYear) btnYear.classList.add('time-tab-active');
                 if(pickerYear) pickerYear.classList.remove('hidden');
             }
-
             renderAllCharts();
         }
 
@@ -806,9 +758,9 @@
             const container = document.getElementById('student-chips');
             if (container) {
                 container.innerHTML = STUDENT_LIST.map(name => `
-                    <label class="flex items-center text-xs sm:text-sm font-semibold p-1.5 hover:bg-[#4B7B94]/10 rounded-lg cursor-pointer select-none border border-[#D4C5B9]/60 bg-white">
-                        <input type="checkbox" value="${name}" onchange="toggleStudent('${name}')" class="w-4 h-4 rounded text-[#4B7B94] focus:ring-[#4B7B94] border-slate-300 mr-2">
-                        <span class="truncate text-[#2D3748]">${name}</span>
+                    <label class="flex items-center text-xs sm:text-sm font-semibold p-1.5 hover:bg-[#DDC3B5]/20 rounded-lg cursor-pointer select-none border border-[#DDC3B9]/60 bg-white">
+                        <input type="checkbox" value="${name}" onchange="toggleStudent('${name}')" class="w-4 h-4 rounded text-[#BFA191] focus:ring-[#BFA191] border-slate-300 mr-2">
+                        <span class="truncate text-[#5C4643]">${name}</span>
                     </label>
                 `).join('');
             }
@@ -860,8 +812,8 @@
             let extraStudents = document.getElementById('input-students').value.trim();
             let allStudentsArr = [...selectedStudents];
             if (extraStudents) allStudentsArr.push(extraStudents);
-            const studentsStr = allStudentsArr.join(', ') || '無註明';
 
+            const studentsStr = allStudentsArr.join(', ') || '無註明';
             const target = document.getElementById('input-target').value;
             const mainType = document.getElementById('input-main-type').value;
             const subType = document.getElementById('input-sub-type').value;
@@ -889,7 +841,6 @@
                 };
                 records.unshift(newRec);
             }
-
             saveData();
             resetForm();
             renderApp();
@@ -899,7 +850,6 @@
         function editRecord(id) {
             const r = records.find(item => item.id === id);
             if (!r) return;
-
             switchPage('indirect-service');
 
             document.getElementById('edit-id').value = r.id;
@@ -948,7 +898,6 @@
             records.sort((a, b) => {
                 let valA = a[sortField] || '';
                 let valB = b[sortField] || '';
-
                 if (sortField === 'date') {
                     valA = new Date(valA);
                     valB = new Date(valB);
@@ -956,7 +905,6 @@
                     valA = parseInt(valA) || 0;
                     valB = parseInt(valB) || 0;
                 }
-
                 if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
                 if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
                 return 0;
@@ -965,32 +913,31 @@
             const tbody = document.getElementById('table-body');
             if (tbody) {
                 if (records.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-400 font-bold">目前暫無任何間接服務紀錄，您可以點擊上方「復原10月 Excel 資料」或「匯入備份」！</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-[#8C7572] font-bold">目前暫無任何間接服務紀錄，您可以點擊上方「復原10月 Excel 資料」或「匯入備份」！</td></tr>`;
                     return;
                 }
-
                 tbody.innerHTML = records.map(r => `
-                    <tr class="hover:bg-[#4B7B94]/10 transition">
-                        <td class="p-3 font-bold text-[#2D3748] whitespace-nowrap">
+                    <tr class="hover:bg-[#F3E1E1]/40 transition">
+                        <td class="p-3 font-bold text-[#5C4643] whitespace-nowrap">
                             ${r.date}<br>
-                            <span class="text-xs font-semibold text-slate-500">${r.period || '-'}</span>
+                            <span class="text-xs font-semibold text-[#8C7572]">${r.period || '-'}</span>
                         </td>
                         <td class="p-3 font-medium whitespace-nowrap">${r.place || '-'}</td>
-                        <td class="p-3 whitespace-nowrap font-black text-[#4B7B94]">${r.minutes} 分</td>
+                        <td class="p-3 whitespace-nowrap font-black text-[#BFA191]">${r.minutes} 分</td>
                         <td class="p-3 max-w-[150px]">
-                            <div class="font-bold text-[#2D3748] break-words">${r.students}</div>
+                            <div class="font-bold text-[#5C4643] break-words">${r.students}</div>
                         </td>
                         <td class="p-3 max-w-[130px]">
-                            <div class="text-xs font-bold text-[#2D3748] break-words">${r.target}</div>
+                            <div class="text-xs font-bold text-[#5C4643] break-words">${r.target}</div>
                         </td>
                         <td class="p-3 max-w-[160px]">
-                            <div class="inline-block bg-[#4B7B94]/15 text-[#4B7B94] font-bold text-xs px-2 py-0.5 rounded-md mb-1">${r.mainType}</div>
-                            <div class="text-xs font-medium text-slate-700 break-words">${r.subType}</div>
+                            <div class="inline-block bg-[#DDC3B5]/40 text-[#5C4643] font-bold text-xs px-2 py-0.5 rounded-md mb-1">${r.mainType}</div>
+                            <div class="text-xs font-medium text-[#8C7572] break-words">${r.subType}</div>
                         </td>
-                        <td class="p-3 max-w-xs font-medium text-[#2D3748] leading-relaxed" title="${r.summary}">${r.summary}</td>
+                        <td class="p-3 max-w-xs font-medium text-[#5C4643] leading-relaxed" title="${r.summary}">${r.summary}</td>
                         <td class="p-3 text-center whitespace-nowrap">
-                            <button onclick="editRecord('${r.id}')" class="text-[#4B7B94] hover:text-[#3d677d] font-bold p-1.5" title="編輯"><i class="fa-solid fa-pen"></i></button>
-                            <button onclick="deleteRecord('${r.id}')" class="text-[#E07A5F] hover:text-[#d0674c] font-bold p-1.5 ml-1" title="刪除"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="editRecord('${r.id}')" class="text-[#BFA191] hover:text-[#a68979] font-bold p-1.5" title="編輯"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteRecord('${r.id}')" class="text-[#D4A3A0] hover:text-[#b3827f] font-bold p-1.5 ml-1" title="刪除"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 `).join('');
@@ -1022,13 +969,13 @@
             const controlsSingle = document.getElementById('view-single-controls');
 
             if (mode === 'all') {
-                if (btnAll) btnAll.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-[#4B7B94] text-white shadow-sm";
-                if (btnSingle) btnSingle.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition text-slate-700 hover:text-slate-900";
+                if (btnAll) btnAll.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-[#BFA191] text-white shadow-sm";
+                if (btnSingle) btnSingle.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition text-[#5C4643] hover:text-[#2D3748]";
                 if (headerAll) headerAll.classList.remove('hidden');
                 if (controlsSingle) controlsSingle.classList.add('hidden');
             } else {
-                if (btnSingle) btnSingle.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-[#4B7B94] text-white shadow-sm";
-                if (btnAll) btnAll.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition text-slate-700 hover:text-slate-900";
+                if (btnSingle) btnSingle.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-[#BFA191] text-white shadow-sm";
+                if (btnAll) btnAll.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition text-[#5C4643] hover:text-[#2D3748]";
                 if (headerAll) headerAll.classList.add('hidden');
                 if (controlsSingle) controlsSingle.classList.remove('hidden');
             }
@@ -1065,7 +1012,7 @@
                         datasets: [{
                             label: '服務時間 (小時)',
                             data: STUDENT_LIST.map(s => studentStats[s]),
-                            backgroundColor: '#E07A5F',
+                            backgroundColor: '#EBC7C4',
                             borderRadius: 6
                         }]
                     },
@@ -1106,7 +1053,7 @@
                         datasets: [{
                             label: '服務時數 (小時)',
                             data: ORDERED_MAIN_TYPES.map(t => typeStats[t]),
-                            backgroundColor: '#4B7B94',
+                            backgroundColor: '#DDC3B5',
                             borderRadius: 6
                         }]
                     },
@@ -1152,7 +1099,7 @@
                 legend.innerHTML = Object.keys(targetCounts).map((key, i) => `
                     <div class="flex justify-between items-center">
                         <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full inline-block" style="background:${PALETTE[i % PALETTE.length]}"></span><span class="truncate max-w-[180px]">${key}</span></span>
-                        <span class="font-extrabold text-[#4B7B94]">${targetCounts[key]} 筆</span>
+                        <span class="font-extrabold text-[#5C4643]">${targetCounts[key]} 筆</span>
                     </div>
                 `).join('');
             }
@@ -1160,8 +1107,8 @@
 
         function switchServiceTypeChart(mode) {
             serviceChartMode = mode;
-            if (document.getElementById('btn-service-main')) document.getElementById('btn-service-main').className = mode === 'main' ? 'px-2.5 py-1 text-xs font-bold rounded transition bg-[#4B7B94] text-white' : 'px-2.5 py-1 text-xs font-bold rounded transition text-slate-700 hover:text-slate-900';
-            if (document.getElementById('btn-service-sub')) document.getElementById('btn-service-sub').className = mode === 'sub' ? 'px-2.5 py-1 text-xs font-bold rounded transition bg-[#4B7B94] text-white' : 'px-2.5 py-1 text-xs font-bold rounded transition text-slate-700 hover:text-slate-900';
+            if (document.getElementById('btn-service-main')) document.getElementById('btn-service-main').className = mode === 'main' ? 'px-2.5 py-1 text-xs font-bold rounded transition bg-[#BFA191] text-white' : 'px-2.5 py-1 text-xs font-bold rounded transition text-[#5C4643] hover:text-[#2D3748]';
+            if (document.getElementById('btn-service-sub')) document.getElementById('btn-service-sub').className = mode === 'sub' ? 'px-2.5 py-1 text-xs font-bold rounded transition bg-[#BFA191] text-white' : 'px-2.5 py-1 text-xs font-bold rounded transition text-[#5C4643] hover:text-[#2D3748]';
             renderTypeChart(getFilteredRecords());
         }
 
@@ -1198,7 +1145,7 @@
                     datasets: [{
                         label: '服務筆數',
                         data: dataValues,
-                        backgroundColor: '#4B7B94',
+                        backgroundColor: '#BFA191',
                         borderRadius: 4
                     }]
                 },
@@ -1297,9 +1244,9 @@
                     datasets: [{
                         label: labelTitle,
                         data: sortedKeys.map(k => stats[k]),
-                        borderColor: '#E07A5F',
+                        borderColor: '#EBC7C4',
                         borderWidth: 3,
-                        backgroundColor: 'rgba(224, 122, 95, 0.25)',
+                        backgroundColor: 'rgba(235, 199, 196, 0.3)',
                         fill: true,
                         tension: 0.3
                     }]
@@ -1322,7 +1269,7 @@
             });
         }
 
-        // 📊 依據 Excel 100% 格式對齊之 CSV 匯出
+        // CSV 匯出
         function exportCSV() {
             let csv = "\uFEFF日期,節次,地點,時間小計(以分鐘數計算),資源班學生(經鑑定確認及疑似)/老師/家長,服務對象,間接服務類型,服務內容摘要\n";
             records.forEach(r => {
@@ -1336,7 +1283,7 @@
             link.click();
         }
 
-        // 📄 依據 Excel 100% 格式對齊之 Word 備查與簽核報表匯出
+        // Word 備查與簽核報表匯出
         function exportWord() {
             const totalMins = records.reduce((sum, r) => sum + (parseInt(r.minutes) || 0), 0);
             const thisMonthPeriods = Math.round(totalMins / 60);
@@ -1388,7 +1335,6 @@
                             `).join('')}
                         </tbody>
                     </table>
-
                     <br>
                     <table class="footer-table">
                         <tr>
@@ -1402,7 +1348,6 @@
                             </td>
                         </tr>
                     </table>
-
                     <table class="sign-table" style="width: 100%;">
                         <tr>
                             <td style="width: 33%;">資源班導師：</td>
@@ -1413,7 +1358,6 @@
                 </body>
                 </html>
             `;
-
             const blob = new Blob([html], { type: 'application/msword' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
