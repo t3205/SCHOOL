@@ -256,6 +256,9 @@
                     </div>
                     <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                         <div class="flex bg-[#F7F2EC] p-1 rounded-xl w-full sm:w-auto justify-center border border-[#DDC3B9]/40">
+                            <button type="button" id="time-tab-all" onclick="setTimeFilterMode('all')" class="px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition text-[#5C4643]">
+                                全部歷史
+                            </button>
                             <button type="button" id="time-tab-day" onclick="setTimeFilterMode('day')" class="px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition text-[#5C4643]">
                                 每日紀錄
                             </button>
@@ -298,7 +301,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- 需求分析卡片 -->
+
+                <!-- ✨ 需求分析卡片 (獨立大看板空間 h-80) -->
                 <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-6">
                     <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4 border-b border-[#F7F2EC] pb-3">
                         <div class="flex items-center gap-2">
@@ -339,30 +343,40 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-72 relative">
+                    <div class="h-80 relative">
                         <canvas id="chart-analysis"></canvas>
                     </div>
                 </div>
-                <!-- 四大統計圖表 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- ✨ 間接服務類型統計 (全寬獨立大圖表，空間與需求分析一樣大 h-80，無固定1-5字樣) -->
+                <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-6">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4 border-b border-[#F7F2EC] pb-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-[#BFA191] text-xl"></i>
+                            <h2 class="text-lg font-black text-[#5C4643]">間接服務類型統計</h2>
+                        </div>
+                        <div class="flex bg-[#F7F2EC] p-1 rounded-xl gap-1 self-start sm:self-auto border border-[#DDC3B9]/40">
+                            <button type="button" id="btn-service-main" onclick="switchServiceTypeChart('main')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg transition bg-[#BFA191] text-white shadow-sm">
+                                類型 (大類)
+                            </button>
+                            <button type="button" id="btn-service-sub" onclick="switchServiceTypeChart('sub')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg transition text-[#5C4643] hover:text-[#2D3748]">
+                                項目 (細項)
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-80 relative">
+                        <canvas id="chart-type"></canvas>
+                    </div>
+                </div>
+
+                <!-- 三大輔助統計圖表 (分布、地點、累積時間) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-5">
                         <h3 class="text-xs font-black text-[#8C7572] uppercase tracking-wider mb-3">服務對象分布</h3>
                         <div class="h-64 relative">
                             <canvas id="chart-target"></canvas>
                         </div>
                         <div id="target-legend" class="mt-3 grid grid-cols-1 gap-1.5 text-xs font-semibold text-[#5C4643] border-t border-[#F7F2EC] pt-3 max-h-28 overflow-y-auto"></div>
-                    </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-5">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="text-xs font-black text-[#8C7572] uppercase tracking-wider">間接服務類型統計 (固定1-5排序)</h3>
-                            <div class="flex bg-[#F7F2EC] p-0.5 rounded-lg gap-0.5 border border-[#DDC3B9]/40">
-                                <button type="button" id="btn-service-main" onclick="switchServiceTypeChart('main')" class="px-2.5 py-1 text-xs font-bold rounded transition bg-[#BFA191] text-white">類型</button>
-                                <button type="button" id="btn-service-sub" onclick="switchServiceTypeChart('sub')" class="px-2.5 py-1 text-xs font-bold rounded transition text-[#5C4643] hover:text-[#2D3748]">項目</button>
-                            </div>
-                        </div>
-                        <div class="h-64 relative">
-                            <canvas id="chart-type"></canvas>
-                        </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm border border-[#DDC3B9]/60 p-4 sm:p-5">
                         <h3 class="text-xs font-black text-[#8C7572] uppercase tracking-wider mb-3">地點時間占比 (小時)</h3>
@@ -473,9 +487,7 @@
             ]
         };
         const STUDENT_LIST = ["102 陳O芯", "104 許O棠", "106 許O瑀", "108 黃O瑞", "110 蔡O昌", "111 陳O豪", "113 張O峻", "114 巫O升", "201 劉O兆", "207 洪O恩", "209 鄭O煜", "215 張O恩", "301 廖O宇", "303 吳O誠", "304 吳O恩", "307 陳O禎", "311 黃O莆", "314 卓O諺", "314 鍾O軒", "315 戴O承", "315 林O成", "315 賴O睿", "315 鍾O靖"];
-        // 依據品牌主題調色盤 (#F3E1E1, #DDC3B5, #EBC7C4, #F7F2EC, #BFA191, #D4A3A0)
         const PALETTE = ['#DDC3B5', '#EBC7C4', '#BFA191', '#F3E1E1', '#D4A3A0', '#A68979', '#C2A39B'];
-        // 依據 Excel 100% 精準對齊之 15 筆完整數據
         const INITIAL_DATA = [
             { id: "1", date: "2026/10/01", period: "第一節, 第二節, 第三節", place: "多元教室", minutes: 180, students: "108 黃O瑞, 201 劉O兆, 311 黃O莆", target: "專業團隊 ( 物理治療 、心理治療 、職能治療 、語言治療 )", mainType: "1. 需求評估與處理", subType: "1-4 專業團隊服務的規劃與合作", result: "持續進行", summary: "職能治療課程" },
             { id: "2", date: "2026/10/05", period: "第六節", place: "多元教室", minutes: 60, students: "106 許O瑀", target: "資源班學生", mainType: "2. 個別晤談與指導", subType: "2-1 個別晤談", result: "持續進行", summary: "國中時期曾有遭受同儕霸凌的經驗，當時雖曾向老師反映，但相關情況未獲得妥善處理，因此在面對目前的人際互動問題時，較容易感到擔心與不安，也對向師長求助有所顧慮。" },
@@ -678,25 +690,33 @@
         }
 
         function initTimePickers() {
+            let defaultMonth = "2026-10";
+            if (records && records.length > 0) {
+                const dates = records.map(r => r.date).filter(Boolean).sort().reverse();
+                if (dates.length > 0) {
+                    defaultMonth = dates[0].substring(0, 7).replace(/\//g, '-');
+                }
+            }
             const today = new Date();
             const yyyy = today.getFullYear();
             const mm = String(today.getMonth() + 1).padStart(2, '0');
             const dd = String(today.getDate()).padStart(2, '0');
 
             if (document.getElementById('stats-date-picker')) document.getElementById('stats-date-picker').value = `${yyyy}-${mm}-${dd}`;
-            if (document.getElementById('stats-month-picker')) document.getElementById('stats-month-picker').value = `${yyyy}-${mm}`;
+            if (document.getElementById('stats-month-picker')) document.getElementById('stats-month-picker').value = defaultMonth;
 
             const yearSelect = document.getElementById('stats-year-picker');
             if (yearSelect) {
                 yearSelect.innerHTML = '';
                 for (let y = yyyy - 5; y <= yyyy + 2; y++) {
-                    yearSelect.innerHTML += `<option value="${y}" ${y === yyyy ? 'selected' : ''}>${y} 年</option>`;
+                    yearSelect.innerHTML += `<option value="${y}" ${y === parseInt(defaultMonth.split('-')[0]) ? 'selected' : ''}>${y} 年</option>`;
                 }
             }
         }
 
         function setTimeFilterMode(mode) {
             timeFilterMode = mode;
+            const btnAll = document.getElementById('time-tab-all');
             const btnDay = document.getElementById('time-tab-day');
             const btnMonth = document.getElementById('time-tab-month');
             const btnYear = document.getElementById('time-tab-year');
@@ -705,6 +725,7 @@
             const pickerMonth = document.getElementById('stats-month-picker');
             const pickerYear = document.getElementById('stats-year-picker');
 
+            if(btnAll) btnAll.classList.remove('time-tab-active');
             if(btnDay) btnDay.classList.remove('time-tab-active');
             if(btnMonth) btnMonth.classList.remove('time-tab-active');
             if(btnYear) btnYear.classList.remove('time-tab-active');
@@ -713,7 +734,9 @@
             if(pickerMonth) pickerMonth.classList.add('hidden');
             if(pickerYear) pickerYear.classList.add('hidden');
 
-            if (mode === 'day') {
+            if (mode === 'all') {
+                if(btnAll) btnAll.classList.add('time-tab-active');
+            } else if (mode === 'day') {
                 if(btnDay) btnDay.classList.add('time-tab-active');
                 if(pickerDay) pickerDay.classList.remove('hidden');
             } else if (mode === 'month') {
@@ -727,7 +750,10 @@
         }
 
         function getFilteredRecords() {
-            if (timeFilterMode === 'day') {
+            if (timeFilterMode === 'all') {
+                if (document.getElementById('current-filter-label')) document.getElementById('current-filter-label').innerText = `全部歷史紀錄 (${records.length} 筆)`;
+                return records;
+            } else if (timeFilterMode === 'day') {
                 const targetDay = document.getElementById('stats-date-picker').value.replace(/-/g, '/');
                 if (document.getElementById('current-filter-label')) document.getElementById('current-filter-label').innerText = `紀錄日期：${targetDay}`;
                 return records.filter(r => r.date === targetDay);
@@ -955,8 +981,8 @@
             if (document.getElementById('kpi-periods')) document.getElementById('kpi-periods').innerHTML = `${totalPeriods} <span class="text-sm font-bold">節</span>`;
 
             renderAnalysisChart(filtered);
-            renderTargetChart(filtered);
             renderTypeChart(filtered);
+            renderTargetChart(filtered);
             renderPlaceChart(filtered);
             renderDailyChart(filtered);
         }
@@ -982,11 +1008,7 @@
             renderAnalysisChart(getFilteredRecords());
         }
 
-        function toVerticalText(str) {
-            if (!str) return '';
-            return str.split('').join('\n');
-        }
-
+        // 學生需求分析圖表渲染
         function renderAnalysisChart(currentRecords) {
             const filtered = currentRecords || getFilteredRecords();
             const canvas = document.getElementById('chart-analysis');
@@ -997,12 +1019,16 @@
             if (currentAnalysisMode === 'all') {
                 const studentStats = {};
                 STUDENT_LIST.forEach(s => studentStats[s] = 0);
+
                 filtered.forEach(r => {
-                    STUDENT_LIST.forEach(s => {
-                        if (r.students && r.students.includes(s)) {
-                            studentStats[s] += (r.minutes / 60);
-                        }
-                    });
+                    if (r.students) {
+                        STUDENT_LIST.forEach(s => {
+                            const cleanSName = s.replace(/^[0-9]+\s*/, '');
+                            if (r.students.includes(s) || r.students.includes(cleanSName)) {
+                                studentStats[s] += (parseFloat(r.minutes) / 60);
+                            }
+                        });
+                    }
                 });
 
                 chartInstances['analysis'] = new Chart(ctx, {
@@ -1011,7 +1037,7 @@
                         labels: STUDENT_LIST.map(s => s.split(' ')[1] || s),
                         datasets: [{
                             label: '服務時間 (小時)',
-                            data: STUDENT_LIST.map(s => studentStats[s]),
+                            data: STUDENT_LIST.map(s => parseFloat(studentStats[s].toFixed(2))),
                             backgroundColor: '#EBC7C4',
                             borderRadius: 6
                         }]
@@ -1019,19 +1045,39 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
+                        plugins: { 
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `累積時間: ${context.raw} 小時 (${(context.raw * 60).toFixed(0)} 分鐘)`;
+                                    }
+                                }
+                            }
+                        },
                         scales: { 
-                            x: { ticks: { font: { weight: 'bold' } } },
-                            y: { beginAtZero: true, ticks: { font: { weight: 'bold' } } } 
+                            x: { 
+                                ticks: { 
+                                    font: { weight: 'bold', size: 11 },
+                                    maxRotation: 45,
+                                    minRotation: 0
+                                } 
+                            },
+                            y: { 
+                                beginAtZero: true, 
+                                ticks: { font: { weight: 'bold' } },
+                                title: { display: true, text: '小時 (Hours)', font: { weight: 'bold' } }
+                            } 
                         }
                     }
                 });
             } else {
                 const selectedStudent = document.getElementById('student-filter').value;
-                const studentFiltered = filtered.filter(r => r.students && r.students.includes(selectedStudent));
+                const cleanSName = selectedStudent.replace(/^[0-9]+\s*/, '');
+                const studentFiltered = filtered.filter(r => r.students && (r.students.includes(selectedStudent) || r.students.includes(cleanSName)));
                 
                 const count = studentFiltered.length;
-                const minutes = studentFiltered.reduce((a, c) => a + c.minutes, 0);
+                const minutes = studentFiltered.reduce((a, c) => a + (parseInt(c.minutes) || 0), 0);
                 const suggestedPeriods = (minutes / 60).toFixed(1);
 
                 if (document.getElementById('stu-kpi-count')) document.getElementById('stu-kpi-count').innerText = count;
@@ -1052,7 +1098,7 @@
                         labels: ORDERED_MAIN_TYPES,
                         datasets: [{
                             label: '服務時數 (小時)',
-                            data: ORDERED_MAIN_TYPES.map(t => typeStats[t]),
+                            data: ORDERED_MAIN_TYPES.map(t => parseFloat(typeStats[t].toFixed(2))),
                             backgroundColor: '#DDC3B5',
                             borderRadius: 6
                         }]
@@ -1065,6 +1111,88 @@
                     }
                 });
             }
+        }
+
+        function switchServiceTypeChart(mode) {
+            serviceChartMode = mode;
+            if (document.getElementById('btn-service-main')) document.getElementById('btn-service-main').className = mode === 'main' ? 'px-3.5 py-1.5 text-xs font-bold rounded-lg transition bg-[#BFA191] text-white shadow-sm' : 'px-3.5 py-1.5 text-xs font-bold rounded-lg transition text-[#5C4643] hover:text-[#2D3748]';
+            if (document.getElementById('btn-service-sub')) document.getElementById('btn-service-sub').className = mode === 'sub' ? 'px-3.5 py-1.5 text-xs font-bold rounded-lg transition bg-[#BFA191] text-white shadow-sm' : 'px-3.5 py-1.5 text-xs font-bold rounded-lg transition text-[#5C4643] hover:text-[#2D3748]';
+            renderTypeChart(getFilteredRecords());
+        }
+
+        // 間接服務類型與項目統計圖表
+        function renderTypeChart(filtered) {
+            const canvas = document.getElementById('chart-type');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (chartInstances['type']) chartInstances['type'].destroy();
+
+            let labels = [];
+            let dataValues = [];
+
+            if (serviceChartMode === 'main') {
+                labels = ORDERED_MAIN_TYPES;
+                const stats = {};
+                ORDERED_MAIN_TYPES.forEach(t => stats[t] = 0);
+                filtered.forEach(r => {
+                    if (stats[r.mainType] !== undefined) stats[r.mainType] += 1;
+                });
+                dataValues = ORDERED_MAIN_TYPES.map(t => stats[t]);
+            } else {
+                let allSubTypesOrdered = [];
+                ORDERED_MAIN_TYPES.forEach(m => {
+                    if (SERVICE_MAP[m]) {
+                        allSubTypesOrdered.push(...SERVICE_MAP[m]);
+                    }
+                });
+
+                const subStats = {};
+                allSubTypesOrdered.forEach(sub => subStats[sub] = 0);
+
+                filtered.forEach(r => {
+                    if (r.subType && subStats[r.subType] !== undefined) {
+                        subStats[r.subType] += 1;
+                    } else if (r.subType) {
+                        subStats[r.subType] = (subStats[r.subType] || 0) + 1;
+                        if (!allSubTypesOrdered.includes(r.subType)) allSubTypesOrdered.push(r.subType);
+                    }
+                });
+
+                labels = allSubTypesOrdered;
+                dataValues = labels.map(k => subStats[k] || 0);
+            }
+
+            chartInstances['type'] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '服務筆數',
+                        data: dataValues,
+                        backgroundColor: '#BFA191',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        x: { 
+                            ticks: { 
+                                font: { weight: 'bold', size: 11 },
+                                maxRotation: serviceChartMode === 'sub' ? 45 : 0,
+                                minRotation: 0
+                            } 
+                        },
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { font: { weight: 'bold' }, precision: 0 },
+                            title: { display: true, text: '服務筆數', font: { weight: 'bold' } }
+                        }
+                    }
+                }
+            });
         }
 
         function renderTargetChart(filtered) {
@@ -1105,75 +1233,6 @@
             }
         }
 
-        function switchServiceTypeChart(mode) {
-            serviceChartMode = mode;
-            if (document.getElementById('btn-service-main')) document.getElementById('btn-service-main').className = mode === 'main' ? 'px-2.5 py-1 text-xs font-bold rounded transition bg-[#BFA191] text-white' : 'px-2.5 py-1 text-xs font-bold rounded transition text-[#5C4643] hover:text-[#2D3748]';
-            if (document.getElementById('btn-service-sub')) document.getElementById('btn-service-sub').className = mode === 'sub' ? 'px-2.5 py-1 text-xs font-bold rounded transition bg-[#BFA191] text-white' : 'px-2.5 py-1 text-xs font-bold rounded transition text-[#5C4643] hover:text-[#2D3748]';
-            renderTypeChart(getFilteredRecords());
-        }
-
-        function renderTypeChart(filtered) {
-            const canvas = document.getElementById('chart-type');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            if (chartInstances['type']) chartInstances['type'].destroy();
-
-            let labels = [];
-            let dataValues = [];
-
-            if (serviceChartMode === 'main') {
-                labels = ORDERED_MAIN_TYPES;
-                const stats = {};
-                ORDERED_MAIN_TYPES.forEach(t => stats[t] = 0);
-                filtered.forEach(r => {
-                    if (stats[r.mainType] !== undefined) stats[r.mainType] += 1;
-                });
-                dataValues = ORDERED_MAIN_TYPES.map(t => stats[t]);
-            } else {
-                const subStats = {};
-                filtered.forEach(r => {
-                    if (r.subType) subStats[r.subType] = (subStats[r.subType] || 0) + 1;
-                });
-                labels = Object.keys(subStats).sort();
-                dataValues = labels.map(k => subStats[k]);
-            }
-
-            chartInstances['type'] = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '服務筆數',
-                        data: dataValues,
-                        backgroundColor: '#BFA191',
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { 
-                        x: { 
-                            ticks: { 
-                                font: { weight: 'bold', size: 10 },
-                                maxRotation: 0,
-                                minRotation: 0,
-                                callback: function(val, index) {
-                                    const text = this.getLabelForValue(val);
-                                    if (window.innerWidth < 640 && text.length > 5) {
-                                        return toVerticalText(text);
-                                    }
-                                    return text;
-                                }
-                            } 
-                        },
-                        y: { beginAtZero: true, ticks: { font: { weight: 'bold' }, precision: 0 } }
-                    }
-                }
-            });
-        }
-
         function renderPlaceChart(filtered) {
             const canvas = document.getElementById('chart-place');
             if (!canvas) return;
@@ -1191,7 +1250,7 @@
                 data: {
                     labels: Object.keys(stats),
                     datasets: [{
-                        data: Object.values(stats),
+                        data: Object.values(stats).map(v => parseFloat(v.toFixed(1))),
                         backgroundColor: PALETTE
                     }]
                 },
@@ -1213,18 +1272,18 @@
             const stats = {};
             let labelTitle = "";
 
-            if (timeFilterMode === 'day') {
+            if (timeFilterMode === 'all' || timeFilterMode === 'month') {
+                labelTitle = "每日累積服務時間";
+                if (titleEl) titleEl.innerText = "每日累積服務時間 (小時)";
+                filtered.forEach(r => {
+                    stats[r.date] = (stats[r.date] || 0) + (r.minutes / 60);
+                });
+            } else if (timeFilterMode === 'day') {
                 labelTitle = "當日各節次/時數";
                 if (titleEl) titleEl.innerText = "當日各時段服務時間 (小時)";
                 filtered.forEach(r => {
                     const p = r.period || '其他時間';
                     stats[p] = (stats[p] || 0) + (r.minutes / 60);
-                });
-            } else if (timeFilterMode === 'month') {
-                labelTitle = "每日累積服務時間";
-                if (titleEl) titleEl.innerText = "當月每日累積服務時間 (小時)";
-                filtered.forEach(r => {
-                    stats[r.date] = (stats[r.date] || 0) + (r.minutes / 60);
                 });
             } else if (timeFilterMode === 'year') {
                 labelTitle = "每月累積服務時間";
@@ -1243,7 +1302,7 @@
                     labels: sortedKeys,
                     datasets: [{
                         label: labelTitle,
-                        data: sortedKeys.map(k => stats[k]),
+                        data: sortedKeys.map(k => parseFloat(stats[k].toFixed(1))),
                         borderColor: '#EBC7C4',
                         borderWidth: 3,
                         backgroundColor: 'rgba(235, 199, 196, 0.3)',
